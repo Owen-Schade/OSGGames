@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            accent: '#7b5cff',
+            accent2: '#00e6b8',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --bg-a: #070812;
+      --bg-b: #0f1724;
+      --muted: rgba(255,255,255,0.55);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--bg-a), var(--bg-b));
+      color: #e6eef8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    article {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #7b5cff, #00e6b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .date {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .now-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: linear-gradient(90deg, rgba(123,92,255,0.06), rgba(0,230,184,0.02));
+      padding: 20px 24px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .now-label {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .time-left {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 500;
+      display: none;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <article>
+    <div class="top-section">
+      <div class="title">Today's Schedule</div>
+      <div class="date" id="today-date">Loading date...</div>
+    </div>
+
+    <div class="now-section">
+      <div class="now-label" id="current-period">Now: --</div>
+      <div class="time-left" id="time-left"></div>
+    </div>
+
+    <div class="meta">Live schedule • Central Time (America/Chicago)</div>
+  </article>
+
+  <script>
+    function toSeconds(h, m, s) { return h * 3600 + m * 60 + s; }
+    function getNowCST() { return new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" })); }
+
+    function updateDateHeader() {
+      const now = getNowCST();
+      const opts = { weekday: 'long', month: 'long', day: 'numeric' };
+      document.getElementById("today-date").textContent = now.toLocaleDateString("en-US", opts);
+    }
+
+    function getCurrentPeriod() {
+      const now = getNowCST();
+      const currentSeconds = toSeconds(now.getHours(), now.getMinutes(), now.getSeconds());
+      const dayOfWeek = now.toLocaleDateString("en-US", { weekday: "long" });
+
+      const currentPeriod = document.getElementById("current-period");
+      const timeLeft = document.getElementById("time-left");
+      timeLeft.style.display = "none"; // hide by default
+
+      const schedule = {
+        Monday: [["07:45", "08:35", "Period 1"], ["08:35", "08:41", "Passing Period"], ["08:41", "09:34", "Period 2"], ["09:34", "09:40", "Passing Period"], ["09:40", "10:30", "Period 3"], ["10:30", "10:36", "Passing Period"], ["10:36", "11:26", "Period 4"], ["11:26", "11:32", "Passing Period"], ["11:32", "12:22", "Period 5"], ["12:22", "12:28", "Passing Period"], ["12:28", "13:18", "Period 6"], ["13:18", "13:24", "Passing Period"], ["13:24", "14:14", "Period 7"], ["14:14", "14:20", "Passing Period"], ["14:20", "15:10", "Period 8"]],
+        Tuesday: [["07:45", "08:30", "Period 1"], ["08:30", "08:35", "Passing Period"], ["08:35", "09:20", "Period 2"], ["09:20", "09:25", "Passing Period"], ["09:25", "10:10", "WIN/SOAR"], ["10:10", "10:15", "Passing Period"], ["10:15", "11:00", "Period 3"], ["11:00", "11:05", "Passing Period"], ["11:05", "11:50", "Period 4"], ["11:50", "11:55", "Passing Period"], ["11:55", "12:40", "Period 5"], ["12:40", "12:45", "Passing Period"], ["12:45", "13:30", "Period 6"], ["13:30", "13:35", "Passing Period"], ["13:35", "14:20", "Period 7"], ["14:20", "14:25", "Passing Period"], ["14:25", "15:10", "Period 8"]],
+        Wednesday: [["09:00", "09:42", "Period 1"], ["09:42", "09:47", "Passing Period"], ["09:47", "10:29", "Period 2"], ["10:29", "10:34", "Passing Period"], ["10:34", "11:16", "Period 3"], ["11:16", "11:21", "Passing Period"], ["11:21", "12:03", "Period 4"], ["12:03", "12:08", "Passing Period"], ["12:08", "12:49", "Period 5"], ["12:49", "12:54", "Passing Period"], ["12:54", "13:36", "Period 6"], ["13:36", "13:41", "Passing Period"], ["13:41", "14:23", "Period 7"], ["14:23", "14:28", "Passing Period"], ["14:28", "15:10", "Period 8"]],
+        Thursday: [["07:45", "08:30", "Period 1"], ["08:30", "08:35", "Passing Period"], ["08:35", "09:20", "Period 2"], ["09:20", "09:25", "Passing Period"], ["09:25", "10:10", "WIN/SOAR"], ["10:10", "10:15", "Passing Period"], ["10:15", "11:00", "Period 3"], ["11:00", "11:05", "Passing Period"], ["11:05", "11:50", "Period 4"], ["11:50", "11:55", "Passing Period"], ["11:55", "12:40", "Period 5"], ["12:40", "12:45", "Passing Period"], ["12:45", "13:30", "Period 6"], ["13:30", "13:35", "Passing Period"], ["13:35", "14:20", "Period 7"], ["14:20", "14:25", "Passing Period"], ["14:25", "15:10", "Period 8"]],
+        Friday: [["07:45", "08:35", "Period 1"], ["08:35", "08:41", "Passing Period"], ["08:41", "09:34", "Period 2"], ["09:34", "09:40", "Passing Period"], ["09:40", "10:30", "Period 3"], ["10:30", "10:36", "Passing Period"], ["10:36", "11:26", "Period 4"], ["11:26", "11:32", "Passing Period"], ["11:32", "12:22", "Period 5"], ["12:22", "12:28", "Passing Period"], ["12:28", "13:18", "Period 6"], ["13:18", "13:24", "Passing Period"], ["13:24", "14:14", "Period 7"], ["14:14", "14:20", "Passing Period"], ["14:20", "15:10", "Period 8"]],
+      };
+
+      // Weekend
+      if (dayOfWeek === "Saturday" || dayOfWeek === "Sunday") {
+        currentPeriod.textContent = "Weekend";
+        return;
+      }
+
+      const firstStart = (dayOfWeek === "Wednesday") ? toSeconds(9, 0, 0) : toSeconds(7, 45, 0);
+      const endOfDay = toSeconds(15, 10, 0);
+
+      // Before school
+      if (currentSeconds < firstStart) {
+        currentPeriod.textContent = "Before School";
+        const untilStart = firstStart - currentSeconds;
+        const hrs = Math.floor(untilStart / 3600);
+        const mins = Math.floor((untilStart % 3600) / 60);
+        const secs = untilStart % 60;
+        timeLeft.textContent = `Starts in ${hrs > 0 ? hrs + "h " : ""}${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        timeLeft.style.display = "block";
+        return;
+      }
+
+      // After school
+      if (currentSeconds >= endOfDay) {
+        currentPeriod.textContent = "After School";
+        return;
+      }
+
+      // During school
+      const daySchedule = schedule[dayOfWeek] || [];
+      for (const [start, end, period] of daySchedule) {
+        const [sh, sm] = start.split(":").map(Number);
+        const [eh, em] = end.split(":").map(Number);
+        const startTime = toSeconds(sh, sm, 0);
+        const endTime = toSeconds(eh, em, 0);
+
+        if (currentSeconds >= startTime && currentSeconds < endTime) {
+          const remaining = endTime - currentSeconds;
+          const mins = Math.floor(remaining / 60).toString().padStart(2, "0");
+          const secs = (remaining % 60).toString().padStart(2, "0");
+          currentPeriod.textContent = `Now: ${period}`;
+          timeLeft.textContent = `Ends in ${mins}:${secs}`;
+          timeLeft.style.display = "block";
+          return;
+        }
+      }
+
+      // Fallback
+      currentPeriod.textContent = "After School";
+    }
+
+    setInterval(() => {
+      updateDateHeader();
+      getCurrentPeriod();
+    }, 1000);
+
+    updateDateHeader();
+    getCurrentPeriod();
+  </script>
+</body>
+</html>
