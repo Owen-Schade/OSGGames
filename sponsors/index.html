@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="CybriaTech">
+<title>Sponsors - SGGames</title>
+<meta name="keywords" content="games, unblocked games, video games, unity, webgl, swf, html5, cybriagames, cybriagames sequel, emulators, sggame">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+<link rel="icon" href="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x16.png">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script src="/js/mimicry.js"></script>
+<!-- Import Google fonts first, outside of the style tag -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --primary-color: #0a0e17;
+        --secondary-color: #1a1f2c;
+        --accent-color: #5644ff;
+        --text-color: #ffffff;
+        --button-hover: #7366ff;
+        --highlight-color: #ff4656;
+        --gray-dark: rgba(26, 31, 44, 0.8);
+        --gray-light: rgba(56, 56, 56, 0.8);
+        --modal-background: rgba(10, 14, 23, 0.95);
+        --background-gray: #2a2a2a;
+    }
+    
+    * {
+        box-sizing: border-box;
+    }
+    
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-gray);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Header Styling */
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        background-color: var(--secondary-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        flex-shrink: 0;
+    }
+    
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+    
+    .home-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: bold;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .home-link:hover {
+        color: var(--accent-color);
+    }
+    
+    /* Settings Button */
+    .settings-button {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .settings-button:hover {
+        color: var(--accent-color);
+    }
+    
+    /* Main Content */
+    main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+        background: linear-gradient(90deg, #5644ff, #9f44ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .funding-card {
+        background-color: var(--secondary-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .funding-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .funding-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .funding-amount {
+        font-weight: 700;
+        color: #8ff7b2;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        overflow: hidden;
+        margin-bottom: 0.8rem;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #4caf50, #84ff9c);
+        transition: width 0.35s ease;
+    }
+
+    .funding-subtext {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.75);
+    }
+
+    .edit-tip {
+        margin-bottom: 1.25rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+    }
+
+    /* Table Styling */
+    .sponsor-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--secondary-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sponsor-table th {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 1.2rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .sponsor-table td {
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        vertical-align: middle;
+    }
+    
+    .sponsor-table tr:hover {
+        background-color: rgba(86, 68, 255, 0.1);
+    }
+    
+    .sponsor-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .sponsor-name {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .donation-amount {
+        font-weight: 700;
+        color: #8ff7b2;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 2rem;
+        text-align: center;
+        background-color: var(--secondary-color);
+        border-top: 2px solid var(--accent-color);
+        margin-top: auto;
+        flex-shrink: 0;
+    }
+    
+    .footer p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .header {
+            padding: 0.8rem 1rem;
+        }
+        
+        .nav-links {
+            gap: 1rem;
+        }
+        
+        .home-link {
+            font-size: 1.2rem;
+        }
+        
+        main {
+            padding: 1rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .sponsor-table th,
+        .sponsor-table td {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .sponsor-table {
+            font-size: 0.8rem;
+        }
+        
+        .sponsor-table th,
+        .sponsor-table td {
+            padding: 0.6rem 0.5rem;
+        }
+        
+        .nav-links {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .home-link {
+            font-size: 1rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+<div class="header">
+    <div class="nav-links">
+        <a href="/" class="home-link">
+            <i class="fas fa-home mr-2"></i>
+            ㅤHome
+        </a>
+        <a href="/games/index.html" class="home-link">
+            <i class="fas fa-gamepad"></i>
+            ㅤGames
+        </a>
+    </div>
+    <a href="/settings" class="home-link">
+        <i class="fas fa-cog"></i>
+        ㅤSettings
+    </a>
+</div>
+
+<main>
+    <h1>Sponsors</h1>
+
+    <div class="funding-card">
+        <div class="funding-head">
+            <span class="funding-title">Fundraising Progress</span>
+            <span id="fundingAmount" class="funding-amount">$0 / $500</span>
+        </div>
+        <div class="progress-track">
+            <div id="fundingProgressBar" class="progress-fill"></div>
+        </div>
+        <div id="fundingSubtext" class="funding-subtext">0% of goal reached</div>
+    </div>
+
+    <p class="edit-tip">To become a sponsor, send me money via <b>CashApp</b> or <b>Zelle</b> and include your name in the message.</p>
+    <p class="edit-tip"><b>CashApp:</b> $santigutierrezsch</p>
+    <p class="edit-tip"><b>Zelle:</b> (630) 210-2418</p>
+    
+    <table class="sponsor-table">
+        <thead>
+            <tr>
+                <th>Sponsor</th>
+                <th>Amount Donated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- COPY PASTE SECTION START - Add new sponsors here using the format below -->
+            
+            
+            <tr class="sponsor-row" data-amount="100">
+                <td class="sponsor-name">Aidan McGrath</td>
+                <td class="donation-amount">$10</td>
+            </tr>
+            <!--
+            <tr class="sponsor-row" data-amount="50">
+                <td class="sponsor-name">Community Booster</td>
+                <td class="donation-amount">$50</td>
+            </tr>
+        -->
+            <!-- COPY PASTE SECTION END -->
+            
+            <!--
+            TEMPLATE FOR ADDING NEW ENTRIES:
+            
+            <tr class="sponsor-row" data-amount="25">
+                <td class="sponsor-name">SPONSOR NAME HERE</td>
+                <td class="donation-amount">$25</td>
+            </tr>
+            -->
+            
+        </tbody>
+    </table>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 Santiago Gutierrez. All rights reserved.</p>
+</footer>
+
+<script>
+    (function() {
+        const GOAL_AMOUNT = 500;
+        const fundingAmount = document.getElementById('fundingAmount');
+        const fundingBar = document.getElementById('fundingProgressBar');
+        const fundingSubtext = document.getElementById('fundingSubtext');
+        const sponsorRows = document.querySelectorAll('.sponsor-row');
+
+        if (!fundingAmount || !fundingBar || !fundingSubtext) {
+            return;
+        }
+
+        let totalRaised = 0;
+        sponsorRows.forEach(row => {
+            const amount = Number(row.getAttribute('data-amount'));
+            if (!Number.isNaN(amount) && amount > 0) {
+                totalRaised += amount;
+            }
+        });
+
+        const progressPercent = Math.min((totalRaised / GOAL_AMOUNT) * 100, 100);
+        fundingAmount.textContent = `$${totalRaised.toLocaleString()} / $${GOAL_AMOUNT.toLocaleString()}`;
+        fundingBar.style.width = `${progressPercent}%`;
+        fundingSubtext.textContent = `${progressPercent.toFixed(1)}% of goal reached`;
+    })();
+</script>
+
+</body>
+</html>

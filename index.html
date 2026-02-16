@@ -266,6 +266,105 @@ hello huzz
             background-color: var(--accent-color);
             transform: translateY(-3px) rotate(30deg);
         }
+
+        /* V2 announcement popup */
+        .update-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.78);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .update-popup-overlay.visible {
+            display: flex;
+        }
+
+        .update-popup {
+            width: 100%;
+            max-width: 520px;
+            background: linear-gradient(160deg, #1a1f2c 0%, #22293a 100%);
+            border: 2px solid var(--accent-color);
+            border-radius: 14px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        .update-popup-header {
+            background: linear-gradient(90deg, #5644ff, #9f44ff);
+            color: #fff;
+            padding: 0.9rem 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .update-popup-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .update-popup-content {
+            padding: 1.2rem 1rem 1rem;
+            text-align: left;
+        }
+
+        .update-popup-subtitle {
+            margin: 0 0 0.7rem 0;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .update-popup-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.4rem;
+        }
+
+        .update-popup-list li {
+            font-size: 1rem;
+        }
+
+        .update-plus {
+            color: #6df2a5;
+            font-weight: 700;
+            margin-right: 0.35rem;
+        }
+
+        .update-minus {
+            color: #ff8f8f;
+            font-weight: 700;
+            margin-right: 0.35rem;
+        }
+
+        .update-popup-actions {
+            padding: 0 1rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .update-popup-btn {
+            background: var(--highlight-color);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
         
         @media (max-width: 768px) {
             .game-grid {
@@ -328,16 +427,16 @@ hello huzz
                     <div class="icon">💭</div>
                     <div class="name">Requests/Feedback</div>
                 </a>
-                <a href="/status" class="game-button">
-                    <div class="icon">⏳</div>
-                    <div class="name">Requests Status</div>
+                <a href="/sponsors" class="game-button">
+                    <div class="icon">📢</div>
+                    <div class="name">Sponsors</div>
                 </a>
             </div>
         </div>
     </div>
     
     <footer>
-        © 2025 Santiago Gutierrez
+        © 2026 Santiago Gutierrez
     </footer>
 
     <!-- Settings Icon (Floating) -->
@@ -347,8 +446,31 @@ hello huzz
         </a>
     </div>
 
+    <div id="updatePopupOverlay" class="update-popup-overlay" aria-hidden="true">
+        <div class="update-popup" role="dialog" aria-modal="true" aria-labelledby="updatePopupTitle">
+            <div class="update-popup-header">
+                <span id="updatePopupTitle">SGGames V2.0 Out Now!</span>
+                <button id="updatePopupCloseX" class="update-popup-close" type="button" aria-label="Close update popup">&times;</button>
+            </div>
+            <div class="update-popup-content">
+                <p class="update-popup-subtitle">Updates:</p>
+                <ul class="update-popup-list">
+                    <li><span class="update-plus">+</span>Over 200 New Games added</li>
+                    <li><span class="update-plus">+</span>Favoriting feature</li>
+                    <li><span class="update-plus">+</span>Sponsorships</li>
+                    <li><span class="update-minus">-</span>Request Status page</li>
+                </ul>
+            </div>
+            <div class="update-popup-actions">
+                <button id="updatePopupCloseBtn" class="update-popup-btn" type="button">Got it</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        const UPDATE_POPUP_STORAGE_KEY = 'sggamesSeenV2Popup';
+
         function getFormattedDate() {
             const options = { weekday: 'long', month: 'long', day: 'numeric' };
             return new Date().toLocaleDateString('en-US', options);
@@ -376,6 +498,41 @@ hello huzz
             },
             retina_detect: true
         });
+
+        (function setupUpdatePopup() {
+            const overlay = document.getElementById('updatePopupOverlay');
+            const closeX = document.getElementById('updatePopupCloseX');
+            const closeBtn = document.getElementById('updatePopupCloseBtn');
+            if (!overlay) {
+                return;
+            }
+
+            const hasSeenPopup = localStorage.getItem(UPDATE_POPUP_STORAGE_KEY) === 'true';
+            if (!hasSeenPopup) {
+                overlay.classList.add('visible');
+                overlay.setAttribute('aria-hidden', 'false');
+            }
+
+            function closePopupAndRemember() {
+                localStorage.setItem(UPDATE_POPUP_STORAGE_KEY, 'true');
+                overlay.classList.remove('visible');
+                overlay.setAttribute('aria-hidden', 'true');
+            }
+
+            if (closeX) {
+                closeX.addEventListener('click', closePopupAndRemember);
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closePopupAndRemember);
+            }
+
+            overlay.addEventListener('click', function(event) {
+                if (event.target === overlay) {
+                    closePopupAndRemember();
+                }
+            });
+        })();
     </script>
 </body>
 </html>
