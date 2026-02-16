@@ -456,6 +456,66 @@
         grid-column: 1 / -1;
         color: var(--text-color);
     }
+
+    /* Starred Games */
+    #starred-games-section {
+        margin-bottom: 1.5rem;
+    }
+
+    #starred-games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.2rem;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    #starred-games-empty {
+        text-align: center;
+        opacity: 0.7;
+        margin-top: 0.5rem;
+    }
+
+    .game-star-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(10, 14, 23, 0.7);
+        color: #ffd54a;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .game-star-btn:hover {
+        transform: scale(1.1);
+        background: rgba(10, 14, 23, 0.9);
+    }
+
+    .game-star-btn.filled {
+        color: #ffc107;
+    }
+
+    @media (max-width: 768px) {
+        #starred-games-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #starred-games-grid {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+    }
     
     /* Request/Support Button */
     .request-button {
@@ -627,14 +687,6 @@
             <div class="game-title">A Dark Room</div>
         </div>
 
-<div class="game" onclick="window.location.href='a-dark-room'">
-            <div class="game-title">A Dark Room</div>
-        </div>
-
-<div class="game" onclick="window.location.href='adofai'">
-            <div class="game-title">Adofai</div>
-        </div>
-
 <div class="game" onclick="window.location.href='adrenalinechallenge2'">
             <div class="game-title">Adrenaline Challenge 2</div>
         </div>
@@ -734,10 +786,6 @@
             <div class="game-title">Basket Random</div>
         </div>
 
-<div class="game" onclick="window.location.href='basketrandom'">
-            <div class="game-title">Basket Random</div>
-        </div>
-
 <div class="game popular" onclick="window.location.href='basketball-stars'">
             <div class="game-title">Basketball Stars</div>
         </div>
@@ -756,10 +804,6 @@
 
 <div class="game" onclick="window.location.href='big-neon-tower'">
             <div class="game-title">Big Neon Tower Tiny Square</div>
-        </div>
-
-<div class="game" onclick="window.location.href='btts'">
-            <div class="game-title">Big Tower Tiny Square</div>
         </div>
 
 <div class="game" onclick="window.location.href='bit-planes'">
@@ -823,10 +867,6 @@
         </div>
 
 <div class="game" onclick="window.location.href='boxing-random'">
-            <div class="game-title">Boxing Random</div>
-        </div>
-
-<div class="game" onclick="window.location.href='boxingrandom'">
             <div class="game-title">Boxing Random</div>
         </div>
 
@@ -914,10 +954,6 @@
             <div class="game-title">Cookie Clicker</div>
         </div>
 
-<div class="game popular" onclick="window.location.href='cookie-clicker'">
-            <div class="game-title">Cookie Clicker</div>
-        </div>
-
 <div class="game" onclick="window.location.href='craftmine'">
             <div class="game-title">Craftmine</div>
         </div>
@@ -930,19 +966,11 @@
             <div class="game-title">CSGO Clicker</div>
         </div>
 
-<div class="game" onclick="window.location.href='cuttherope'">
-            <div class="game-title">CTR</div>
-        </div>
-
 <div class="game" onclick="window.location.href='ctr'">
             <div class="game-title">CTR</div>
         </div>
 
 <div class="game" onclick="window.location.href='ctr-holiday'">
-            <div class="game-title">CTR Holiday</div>
-        </div>
-
-<div class="game" onclick="window.location.href='cuttherope-holiday'">
             <div class="game-title">CTR Holiday</div>
         </div>
 
@@ -963,7 +991,7 @@
         </div>
 
 <div class="game" onclick="window.location.href='dadish3'">
-            <div class="game-title">Dadish3</div>
+            <div class="game-title">Dadish 3</div>
         </div>
 
 <div class="game" onclick="window.location.href='dante'">
@@ -978,16 +1006,8 @@
             <div class="game-title">Death Run 3D</div>
         </div>
 
-<div class="game" onclick="window.location.href='dino'">
-            <div class="game-title">Dino Game</div>
-        </div>
-
 <div class="game" onclick="window.location.href='dogeminer'">
             <div class="game-title">Doge Miner</div>
-        </div>
-
-<div class="game popular" onclick="window.location.href='doodle-jump'">
-            <div class="game-title">Doodle Jump</div>
         </div>
 
 <div class="game" onclick="window.location.href='doodlejump'">
@@ -1078,10 +1098,6 @@
             <div class="game-title">Fancypants Adventures 2</div>
         </div>
 
-<div class="game" onclick="window.location.href='fireboywatergirl'">
-            <div class="game-title">Fireboy and Watergirl</div>
-        </div>
-
 <div class="game" onclick="window.location.href='fbwg'">
             <div class="game-title">Fireboy and Watergirl</div>
         </div>
@@ -1090,23 +1106,11 @@
             <div class="game-title">Fireboy and Watergirl 2</div>
         </div>
 
-<div class="game" onclick="window.location.href='fireboywatergirl2'">
-            <div class="game-title">Fireboy and Watergirl 2</div>
-        </div>
-
 <div class="game" onclick="window.location.href='fbwg3'">
             <div class="game-title">Fireboy and Watergirl 3</div>
         </div>
 
-<div class="game" onclick="window.location.href='fireboywatergirl3'">
-            <div class="game-title">Fireboy and Watergirl 3</div>
-        </div>
-
 <div class="game" onclick="window.location.href='fbwg4'">
-            <div class="game-title">Fireboy and Watergirl 4</div>
-        </div>
-
-<div class="game" onclick="window.location.href='fireboywatergirl4'">
             <div class="game-title">Fireboy and Watergirl 4</div>
         </div>
 
@@ -1202,8 +1206,13 @@
             <div class="game-title">GBA Emulator</div>
         </div>
 
-<div class="game" onclick="window.location.href='geometrydash'">
+<div class="game" onclick="window.location.href='real-geometry-dash'">
             <div class="game-title">Geometry Dash</div>
+        </div>
+
+
+<div class="game" onclick="window.location.href='geometrydash'">
+            <div class="game-title">Geometry Dash (Scratch)</div>
         </div>
 
 <div class="game" onclick="window.location.href='geometryrash'">
@@ -1294,10 +1303,6 @@
             <div class="game-title">Idle Breakout</div>
         </div>
 
-<div class="game popular" onclick="window.location.href='idle-breakout'">
-            <div class="game-title">Idle Breakout</div>
-        </div>
-
 <div class="game" onclick="window.location.href='infiltratingtheairship'">
             <div class="game-title">Infiltrating the Airship</div>
         </div>
@@ -1358,10 +1363,6 @@
             <div class="game-title">Madalin Stunt Cars</div>
         </div>
 
-<div class="game" onclick="window.location.href='madalin-cars-multiplayer'">
-            <div class="game-title">Madalin Stunt Cars</div>
-        </div>
-
 <div class="game" onclick="window.location.href='mario'">
             <div class="game-title">Mario</div>
         </div>
@@ -1388,10 +1389,6 @@
 
 <div class="game" onclick="window.location.href='minesweeper'">
             <div class="game-title">Minesweeper</div>
-        </div>
-
-<div class="game" onclick="window.location.href='monkeymart'">
-            <div class="game-title">Monkey Mart</div>
         </div>
 
 <div class="game" onclick="window.location.href='monkey-mart'">
@@ -1466,20 +1463,8 @@
             <div class="game-title">Papas Burgeria</div>
         </div>
 
-<div class="game" onclick="window.location.href='papas-burgeria-main'">
-            <div class="game-title">Papas Burgeria</div>
-        </div>
-
-<div class="game" onclick="window.location.href='papasfreezeria-main'">
-            <div class="game-title">Papas Freezeria</div>
-        </div>
-
 <div class="game" onclick="window.location.href='papasfreezeria'">
             <div class="game-title">Papas Freezeria</div>
-        </div>
-
-<div class="game" onclick="window.location.href='papas-pizzaria-main'">
-            <div class="game-title">Papas Pizzaria</div>
         </div>
 
 <div class="game" onclick="window.location.href='papaspizzeria'">
@@ -1546,10 +1531,6 @@
             <div class="game-title">Pushback</div>
         </div>
 
-<div class="game" onclick="window.location.href='real-geometry-dash'">
-            <div class="game-title">Real Geometry Dash</div>
-        </div>
-
 <div class="game" onclick="window.location.href='redball3'">
             <div class="game-title">Redball 3</div>
         </div>
@@ -1574,9 +1555,6 @@
             <div class="game-title">Retro Bowl Exploit</div>
         </div>
 
-<div class="game" onclick="window.location.href='retrobowl'">
-            <div class="game-title">Retrobowl</div>
-        </div>
 
 <div class="game" onclick="window.location.href='retrobowlcollege'">
             <div class="game-title">Retrobowl College</div>
@@ -1619,10 +1597,6 @@
         </div>
 
 <div class="game" onclick="window.location.href='rooftop-snipers'">
-            <div class="game-title">Rooftop Snipers</div>
-        </div>
-
-<div class="game" onclick="window.location.href='rooftopsnipers'">
             <div class="game-title">Rooftop Snipers</div>
         </div>
 
@@ -1690,12 +1664,12 @@
             <div class="game-title">Slope 2</div>
         </div>
 
-<div class="game" onclick="window.location.href='slope-ball'">
-            <div class="game-title">Slope Ball</div>
+<div class="game" onclick="window.location.href='slope3'">
+            <div class="game-title">Slope 3</div>
         </div>
 
-<div class="game" onclick="window.location.href='slope3'">
-            <div class="game-title">Slope3</div>
+<div class="game" onclick="window.location.href='slope-ball'">
+            <div class="game-title">Slope Ball</div>
         </div>
 
 <div class="game" onclick="window.location.href='snake'">
@@ -1711,10 +1685,6 @@
         </div>
 
 <div class="game" onclick="window.location.href='soccer-random'">
-            <div class="game-title">Soccer Random</div>
-        </div>
-
-<div class="game" onclick="window.location.href='soccerrandom'">
             <div class="game-title">Soccer Random</div>
         </div>
 
@@ -1782,10 +1752,6 @@
             <div class="game-title">Subway Surfers New York</div>
         </div>
 
-<div class="game" onclick="window.location.href='sm64'">
-            <div class="game-title">Super Mario 64</div>
-        </div>
-
 <div class="game" onclick="window.location.href='supermario64'">
             <div class="game-title">Super Mario 64</div>
         </div>
@@ -1826,10 +1792,6 @@
             <div class="game-title">Temple Run 2</div>
         </div>
 
-<div class="game" onclick="window.location.href='temple-run-2'">
-            <div class="game-title">Temple Run 2</div>
-        </div>
-
 <div class="game" onclick="window.location.href='tetra-legends'">
             <div class="game-title">Tetra Legends</div>
         </div>
@@ -1848,10 +1810,6 @@
 
 <div class="game" onclick="window.location.href='theimpossiblequiz'">
             <div class="game-title">The Impossible Quiz</div>
-        </div>
-
-<div class="game" onclick="window.location.href='thereisnogame'">
-            <div class="game-title">There Is No Game</div>
         </div>
 
 <div class="game" onclick="window.location.href='there-is-no-game'">
@@ -1907,10 +1865,6 @@
         </div>
 
 <div class="game" onclick="window.location.href='tunnelrush'">
-            <div class="game-title">Tunnel Rush</div>
-        </div>
-
-<div class="game" onclick="window.location.href='tunnel-rush'">
             <div class="game-title">Tunnel Rush</div>
         </div>
 
@@ -1987,10 +1941,6 @@
         </div>
 
 <div class="game" onclick="window.location.href='worlds-hardest-game'">
-            <div class="game-title">World's Hardest Game</div>
-        </div>
-
-<div class="game" onclick="window.location.href='worldshardestgame'">
             <div class="game-title">World's Hardest Game</div>
         </div>
 
@@ -2107,13 +2057,13 @@
                         <span class="toggle-slider"></span>
                     </div>
                 </label>
-                <div class="toggle-desc">Instantly redirects to Google when pressed</div>
+                <div class="toggle-desc">Instantly redirects to your chosen site when pressed</div>
             </div>
             
             <div class="panic-key-setting">
                 <label for="panicKeyInput">Panic Key:</label>
                 <input type="text" id="panicKeyInput" value="[" maxlength="1">
-                <div class="setting-note">Press this key to instantly redirect to Google</div>
+                <div class="setting-note">Press this key to instantly redirect to your configured panic URL</div>
                 <div class="setting-warning">?? Use an uncommon key to avoid accidental activation</div>
             </div>
         </div>
@@ -2563,6 +2513,19 @@
             document.addEventListener('keydown', handlePanicKey);
         }
     }
+
+    function getPanicRedirectUrl() {
+        const savedRedirectUrl = (localStorage.getItem('panicRedirectUrl') || '').trim();
+        if (!savedRedirectUrl) {
+            return 'https://www.google.com';
+        }
+
+        if (/^https?:\/\//i.test(savedRedirectUrl)) {
+            return savedRedirectUrl;
+        }
+
+        return `https://${savedRedirectUrl}`;
+    }
     
     function handlePanicKey(event) {
         const panicKey = localStorage.getItem('panicKey') || '[';
@@ -2570,8 +2533,8 @@
             // Set a flag that this is a panic activation so verification can be bypassed
             sessionStorage.setItem('panicActivation', 'true');
             
-            // Redirect to Google immediately
-            window.location.href = 'https://www.google.com';
+            // Redirect to the configured panic URL immediately
+            window.location.href = getPanicRedirectUrl();
         }
     }
     
@@ -2596,6 +2559,199 @@
             };
         }
     }
+</script>
+<script>
+    (function() {
+        const STARRED_STORAGE_KEY = 'sggamesStarredGames';
+
+        function safeParseStarredGames() {
+            try {
+                const raw = localStorage.getItem(STARRED_STORAGE_KEY);
+                const parsed = JSON.parse(raw || '[]');
+                return new Set(Array.isArray(parsed) ? parsed : []);
+            } catch (error) {
+                return new Set();
+            }
+        }
+
+        function saveStarredGames(starredSet) {
+            localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(Array.from(starredSet)));
+        }
+
+        function extractGameHref(gameCard) {
+            const onclick = gameCard.getAttribute('onclick') || '';
+            const onclickMatch = onclick.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
+            if (onclickMatch && onclickMatch[1]) {
+                return onclickMatch[1];
+            }
+
+            const anchor = gameCard.querySelector('a[href]');
+            if (anchor) {
+                return anchor.getAttribute('href');
+            }
+
+            return '';
+        }
+
+        function getGameTitle(gameCard) {
+            const titleElement = gameCard.querySelector('.game-title');
+            return titleElement ? titleElement.textContent.trim() : '';
+        }
+
+        function getGameKey(gameCard) {
+            const href = extractGameHref(gameCard);
+            if (href) {
+                return `href:${href}`;
+            }
+            return `title:${getGameTitle(gameCard).toLowerCase()}`;
+        }
+
+        function updateStarButton(button, isStarred) {
+            button.classList.toggle('filled', isStarred);
+            button.innerHTML = isStarred
+                ? '<i class="fas fa-star" aria-hidden="true"></i>'
+                : '<i class="far fa-star" aria-hidden="true"></i>';
+            button.setAttribute('aria-pressed', isStarred ? 'true' : 'false');
+            button.setAttribute('title', isStarred ? 'Unstar game' : 'Star game');
+        }
+
+        function applyStarStateToCards(gameKey, isStarred) {
+            document.querySelectorAll('.game[data-game-key]').forEach(card => {
+                if (card.dataset.gameKey === gameKey) {
+                    const button = card.querySelector('.game-star-btn');
+                    if (button) {
+                        updateStarButton(button, isStarred);
+                    }
+                }
+            });
+        }
+
+        function createStarButton(gameKey, starredSet, onToggle) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'game-star-btn';
+            button.dataset.gameKey = gameKey;
+            button.setAttribute('aria-label', 'Toggle starred game');
+            updateStarButton(button, starredSet.has(gameKey));
+
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                onToggle(gameKey);
+            });
+
+            return button;
+        }
+
+        function buildStarredSection() {
+            const main = document.querySelector('main');
+            const gamesGrid = document.getElementById('games');
+            if (!main || !gamesGrid) {
+                return null;
+            }
+
+            let section = document.getElementById('starred-games-section');
+            if (section) {
+                return section;
+            }
+
+            section = document.createElement('div');
+            section.id = 'starred-games-section';
+            section.innerHTML = `
+                <div class="section-header">Starred Games</div>
+                <div id="starred-games-grid"></div>
+                <div id="starred-games-empty">Star games to keep your favorites here.</div>
+            `;
+            main.insertBefore(section, gamesGrid);
+            return section;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const allMainGameCards = Array.from(document.querySelectorAll('#games > .game'));
+            if (!allMainGameCards.length) {
+                return;
+            }
+
+            const starredSet = safeParseStarredGames();
+            const gamesByKey = new Map();
+            const starredSection = buildStarredSection();
+            if (!starredSection) {
+                return;
+            }
+
+            const starredGrid = starredSection.querySelector('#starred-games-grid');
+            const emptyState = starredSection.querySelector('#starred-games-empty');
+
+            function renderStarredCards() {
+                starredGrid.innerHTML = '';
+
+                allMainGameCards.forEach(mainCard => {
+                    const gameKey = mainCard.dataset.gameKey;
+                    if (!gameKey || !starredSet.has(gameKey)) {
+                        return;
+                    }
+
+                    const sourceData = gamesByKey.get(gameKey);
+                    if (!sourceData) {
+                        return;
+                    }
+
+                    const starredCard = document.createElement('div');
+                    starredCard.className = 'game';
+                    starredCard.dataset.gameKey = gameKey;
+
+                    const onclick = sourceData.onclick;
+                    if (onclick) {
+                        starredCard.setAttribute('onclick', onclick);
+                    }
+
+                    const title = document.createElement('div');
+                    title.className = 'game-title';
+                    title.textContent = sourceData.title;
+                    starredCard.appendChild(title);
+
+                    const starButton = createStarButton(gameKey, starredSet, toggleGameStar);
+                    starredCard.appendChild(starButton);
+                    starredGrid.appendChild(starredCard);
+                });
+
+                const hasStarredGames = starredGrid.children.length > 0;
+                emptyState.style.display = hasStarredGames ? 'none' : 'block';
+            }
+
+            function toggleGameStar(gameKey) {
+                if (starredSet.has(gameKey)) {
+                    starredSet.delete(gameKey);
+                } else {
+                    starredSet.add(gameKey);
+                }
+
+                saveStarredGames(starredSet);
+                const isNowStarred = starredSet.has(gameKey);
+                applyStarStateToCards(gameKey, isNowStarred);
+                renderStarredCards();
+            }
+
+            allMainGameCards.forEach(card => {
+                const gameKey = getGameKey(card);
+                const title = getGameTitle(card);
+                const onclick = card.getAttribute('onclick') || '';
+
+                card.dataset.gameKey = gameKey;
+                gamesByKey.set(gameKey, { title: title, onclick: onclick });
+
+                const existingStar = card.querySelector('.game-star-btn');
+                if (existingStar) {
+                    existingStar.remove();
+                }
+
+                const starButton = createStarButton(gameKey, starredSet, toggleGameStar);
+                card.appendChild(starButton);
+            });
+
+            renderStarredCards();
+        });
+    })();
 </script>
 </body>
 </html>

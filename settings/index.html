@@ -311,6 +311,18 @@
             text-align: center;
             font-size: 1.2rem;
         }
+
+        #panicRedirectInput {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
         
         .setting-note {
             font-size: 0.8rem;
@@ -504,7 +516,7 @@
             
             <div class="security-setting">
                 <h4>Panic Button</h4>
-                <p>Instantly redirects to Google when pressed</p>
+                <p>Instantly redirects to your chosen site when pressed</p>
                 
                 <label class="toggle-label">
                     <span>Enable panic button</span>
@@ -517,7 +529,9 @@
                 <div class="panic-key-setting">
                     <label for="panicKeyInput" class="panic-key-label">Panic Key:</label>
                     <input type="text" id="panicKeyInput" value="[" maxlength="1">
-                    <div class="setting-note">Press this key to instantly redirect to Google</div>
+                    <label for="panicRedirectInput" class="panic-key-label">Panic Redirect URL:</label>
+                    <input type="text" id="panicRedirectInput" value="https://www.google.com" placeholder="https://www.google.com">
+                    <div class="setting-note">Press this key to instantly redirect to the URL above</div>
                     <div class="setting-warning">⚠️ Use an uncommon key to avoid accidental activation</div>
                 </div>
             </div>
@@ -580,7 +594,27 @@
                     saveSecuritySettings();
                 });
             }
+
+            const panicRedirectInput = document.getElementById('panicRedirectInput');
+            if (panicRedirectInput) {
+                panicRedirectInput.addEventListener('change', function() {
+                    saveSecuritySettings();
+                });
+            }
         });
+
+        function normalizePanicRedirectUrl(url) {
+            const trimmedUrl = (url || '').trim();
+            if (!trimmedUrl) {
+                return '';
+            }
+
+            if (/^https?:\/\//i.test(trimmedUrl)) {
+                return trimmedUrl;
+            }
+
+            return `https://${trimmedUrl}`;
+        }
         
         function loadSavedSettingsPage() {
             // Tab cloaking settings
@@ -606,6 +640,7 @@
             const verificationToggle = document.getElementById('verificationToggle');
             const panicButtonToggle = document.getElementById('panicButtonToggle');
             const panicKeyInput = document.getElementById('panicKeyInput');
+            const panicRedirectInput = document.getElementById('panicRedirectInput');
             
             if (verificationToggle) {
                 const verificationEnabled = localStorage.getItem('verificationEnabled') === 'true';
@@ -620,6 +655,11 @@
             if (panicKeyInput) {
                 const panicKey = localStorage.getItem('panicKey') || '[';
                 panicKeyInput.value = panicKey;
+            }
+
+            if (panicRedirectInput) {
+                const panicRedirectUrl = localStorage.getItem('panicRedirectUrl') || 'https://www.google.com';
+                panicRedirectInput.value = panicRedirectUrl;
             }
             
             // Email customization settings
@@ -706,6 +746,7 @@
             const verificationToggle = document.getElementById('verificationToggle');
             const panicButtonToggle = document.getElementById('panicButtonToggle');
             const panicKeyInput = document.getElementById('panicKeyInput');
+            const panicRedirectInput = document.getElementById('panicRedirectInput');
             
             if (verificationToggle) {
                 localStorage.setItem('verificationEnabled', verificationToggle.checked);
@@ -717,6 +758,17 @@
             
             if (panicKeyInput && panicKeyInput.value) {
                 localStorage.setItem('panicKey', panicKeyInput.value);
+            }
+
+            if (panicRedirectInput) {
+                const normalizedRedirectUrl = normalizePanicRedirectUrl(panicRedirectInput.value);
+                if (normalizedRedirectUrl) {
+                    localStorage.setItem('panicRedirectUrl', normalizedRedirectUrl);
+                    panicRedirectInput.value = normalizedRedirectUrl;
+                } else {
+                    localStorage.removeItem('panicRedirectUrl');
+                    panicRedirectInput.value = 'https://www.google.com';
+                }
             }
             
             // Show feedback

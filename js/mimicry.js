@@ -51,14 +51,27 @@ function initPanicKey() {
     }
 }
 
+function getPanicRedirectUrl() {
+    const savedRedirectUrl = (localStorage.getItem('panicRedirectUrl') || '').trim();
+    if (!savedRedirectUrl) {
+        return 'https://www.google.com';
+    }
+
+    if (/^https?:\/\//i.test(savedRedirectUrl)) {
+        return savedRedirectUrl;
+    }
+
+    return `https://${savedRedirectUrl}`;
+}
+
 function handlePanicKey(event) {
     const panicKey = localStorage.getItem('panicKey') || '[';
     if (event.key === panicKey) {
         // Set a flag that this is a panic activation so verification can be bypassed
         sessionStorage.setItem('panicActivation', 'true');
         
-        // Redirect to Google immediately
-        window.location.href = 'https://www.google.com';
+        // Redirect to the configured panic URL immediately
+        window.location.href = getPanicRedirectUrl();
     }
 }
 
@@ -104,6 +117,7 @@ function loadSavedSettings() {
     const verificationToggle = document.getElementById('verificationToggle');
     const panicButtonToggle = document.getElementById('panicButtonToggle');
     const panicKeyInput = document.getElementById('panicKeyInput');
+    const panicRedirectInput = document.getElementById('panicRedirectInput');
     
     if (verificationToggle) {
         const verificationEnabled = localStorage.getItem('verificationEnabled') === 'true';
@@ -118,6 +132,10 @@ function loadSavedSettings() {
     if (panicKeyInput) {
         const panicKey = localStorage.getItem('panicKey') || '[';
         panicKeyInput.value = panicKey;
+    }
+
+    if (panicRedirectInput) {
+        panicRedirectInput.value = localStorage.getItem('panicRedirectUrl') || 'https://www.google.com';
     }
     
     // Email customization settings
@@ -207,6 +225,7 @@ function saveSecuritySettings() {
     const verificationToggle = document.getElementById('verificationToggle');
     const panicButtonToggle = document.getElementById('panicButtonToggle');
     const panicKeyInput = document.getElementById('panicKeyInput');
+    const panicRedirectInput = document.getElementById('panicRedirectInput');
     
     if (verificationToggle) {
         localStorage.setItem('verificationEnabled', verificationToggle.checked);
@@ -218,6 +237,20 @@ function saveSecuritySettings() {
     
     if (panicKeyInput && panicKeyInput.value) {
         localStorage.setItem('panicKey', panicKeyInput.value);
+    }
+
+    if (panicRedirectInput) {
+        const panicRedirectUrl = (panicRedirectInput.value || '').trim();
+        if (panicRedirectUrl) {
+            const normalizedRedirectUrl = /^https?:\/\//i.test(panicRedirectUrl)
+                ? panicRedirectUrl
+                : `https://${panicRedirectUrl}`;
+            localStorage.setItem('panicRedirectUrl', normalizedRedirectUrl);
+            panicRedirectInput.value = normalizedRedirectUrl;
+        } else {
+            localStorage.removeItem('panicRedirectUrl');
+            panicRedirectInput.value = 'https://www.google.com';
+        }
     }
     
     // Reinitialize security features with new settings
@@ -320,6 +353,13 @@ function setupSettingsModal() {
     const panicKeyInput = document.getElementById('panicKeyInput');
     if (panicKeyInput) {
         panicKeyInput.addEventListener('change', function() {
+            saveSecuritySettings();
+        });
+    }
+
+    const panicRedirectInput = document.getElementById('panicRedirectInput');
+    if (panicRedirectInput) {
+        panicRedirectInput.addEventListener('change', function() {
             saveSecuritySettings();
         });
     }
