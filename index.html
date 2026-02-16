@@ -45,6 +45,7 @@ hello huzz
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
             padding: 1rem 2rem;
             background-color: var(--secondary-color);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -97,6 +98,14 @@ hello huzz
             -webkit-text-fill-color: transparent;
             font-weight: bold;
             letter-spacing: 1px;
+        }
+
+        .version-label {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            opacity: 0.85;
         }
         
         h2 {
@@ -175,7 +184,7 @@ hello huzz
         }
         
         .feature-button:before {
-            content: "ㅤㅤFEATURED";
+            content: "ㅤㅤUPDATED";
             position: absolute;
             background-color: var(--highlight-color);
             color: white;
@@ -244,7 +253,7 @@ hello huzz
             right: 20px;
             z-index: 99;
         }
-        
+
         .settings-button {
             background-color: var(--secondary-color);
             color: var(--text-color);
@@ -265,6 +274,32 @@ hello huzz
         .settings-button:hover {
             background-color: var(--accent-color);
             transform: translateY(-3px) rotate(30deg);
+        }
+
+        .show-update-button {
+            position: absolute;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            z-index: 101;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .show-update-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(calc(-50% - 2px));
         }
 
         /* V2 announcement popup */
@@ -377,6 +412,10 @@ hello huzz
             .header {
                 padding: 0.8rem 1rem;
             }
+
+            .show-update-button {
+                right: 1rem;
+            }
         }
         
         @media (max-width: 480px) {
@@ -404,6 +443,9 @@ hello huzz
                 Home
             </a>
         </div>
+        <button id="showUpdatePopupBtn" class="show-update-button" type="button" aria-label="Show update popup">
+            <i class="fas fa-bullhorn"></i>
+        </button>
     </div>
     
     <div id="particles-js"></div>
@@ -411,6 +453,7 @@ hello huzz
     <div class="container">
         <header>
             <h1>SG GAMES</h1>
+            <p class="version-label">V2.0</p>
             <!---
             <p>Browse the collection of unblocked games</p>
         -->
@@ -461,7 +504,7 @@ hello huzz
             <div class="update-popup-content">
                 <p class="update-popup-subtitle">Updates:</p>
                 <ul class="update-popup-list">
-                    <li><span class="update-plus">+</span>Over 200 New Games added</li>
+                    <li><span class="update-plus">+</span>Over 300 Games</li>
                     <li><span class="update-plus">+</span>Favoriting feature</li>
                     <li><span class="update-plus">+</span>Custom Panic Key Redirection</li>
                     <li><span class="update-plus">+</span>Sponsorships</li>
@@ -510,14 +553,19 @@ hello huzz
             const overlay = document.getElementById('updatePopupOverlay');
             const closeX = document.getElementById('updatePopupCloseX');
             const closeBtn = document.getElementById('updatePopupCloseBtn');
+            const showPopupBtn = document.getElementById('showUpdatePopupBtn');
             if (!overlay) {
                 return;
             }
 
-            const hasSeenPopup = localStorage.getItem(UPDATE_POPUP_STORAGE_KEY) === 'true';
-            if (!hasSeenPopup) {
+            function showPopup() {
                 overlay.classList.add('visible');
                 overlay.setAttribute('aria-hidden', 'false');
+            }
+
+            const hasSeenPopup = localStorage.getItem(UPDATE_POPUP_STORAGE_KEY) === 'true';
+            if (!hasSeenPopup) {
+                showPopup();
             }
 
             function closePopupAndRemember() {
@@ -532,6 +580,10 @@ hello huzz
 
             if (closeBtn) {
                 closeBtn.addEventListener('click', closePopupAndRemember);
+            }
+
+            if (showPopupBtn) {
+                showPopupBtn.addEventListener('click', showPopup);
             }
 
             overlay.addEventListener('click', function(event) {
