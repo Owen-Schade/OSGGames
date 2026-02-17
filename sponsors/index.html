@@ -324,7 +324,7 @@
             <!-- COPY PASTE SECTION START - Add new sponsors here using the format below -->
             
             <!--
-            <tr class="sponsor-row" data-amount="100">
+            <tr class="sponsor-row" data-amount="10">
                 <td class="sponsor-name">Aidan McGrath</td>
                 <td class="donation-amount">$10</td>
             </tr>
@@ -367,7 +367,13 @@
 
         let totalRaised = 0;
         sponsorRows.forEach(row => {
-            const amount = Number(row.getAttribute('data-amount'));
+            const donationCell = row.querySelector('.donation-amount');
+            const cellText = donationCell ? donationCell.textContent : '';
+            const normalizedCellValue = cellText ? cellText.replace(/[^0-9.-]/g, '') : '';
+            const fromCell = Number(normalizedCellValue);
+            const fromData = Number(row.getAttribute('data-amount'));
+            const amount = !Number.isNaN(fromCell) && fromCell > 0 ? fromCell : fromData;
+
             if (!Number.isNaN(amount) && amount > 0) {
                 totalRaised += amount;
             }
