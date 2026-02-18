@@ -320,9 +320,11 @@
                 <th>Amount Donated</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="sponsorBody">
             <!-- COPY PASTE SECTION START - Add new sponsors here using the format below -->
 
+
+            <!--
             <tr class="sponsor-row" data-amount="10">
                 <td class="sponsor-name">Isa Hasan</td>
                 <td class="donation-amount">$3</td>
@@ -340,7 +342,11 @@
                 <td class="sponsor-name">Cooper Pisano</td>
                 <td class="donation-amount">$1</td>
             </tr>
-            <!--
+            <tr class="sponsor-row" data-amount="10">
+                <td class="sponsor-name">Andy Shi</td>
+                <td class="donation-amount">$1</td>
+            </tr>
+            
             <tr class="sponsor-row" data-amount="10">
                 <td class="sponsor-name">Aidan McGrath</td>
                 <td class="donation-amount">$10</td>
@@ -350,7 +356,7 @@
                 <td class="sponsor-name">Community Booster</td>
                 <td class="donation-amount">$50</td>
             </tr>
-        -->
+            -->
             <!-- COPY PASTE SECTION END -->
             
             <!--
@@ -371,37 +377,110 @@
 </footer>
 
 <script>
-    (function() {
-        const GOAL_AMOUNT = 500;
-        const fundingAmount = document.getElementById('fundingAmount');
-        const fundingBar = document.getElementById('fundingProgressBar');
-        const fundingSubtext = document.getElementById('fundingSubtext');
-        const sponsorRows = document.querySelectorAll('.sponsor-row');
+(async function () {
+  const GOAL_AMOUNT = 500;
 
-        if (!fundingAmount || !fundingBar || !fundingSubtext) {
-            return;
-        }
+  // ✅ Your sponsors sheet ID (you posted this)
+  const SHEET_ID = "1-RmLs4i_jZgWJg8TSoSohltPyw3-H6y3mYyoLpMsa_E";
 
-        let totalRaised = 0;
-        sponsorRows.forEach(row => {
-            const donationCell = row.querySelector('.donation-amount');
-            const cellText = donationCell ? donationCell.textContent : '';
-            const normalizedCellValue = cellText ? cellText.replace(/[^0-9.-]/g, '') : '';
-            const fromCell = Number(normalizedCellValue);
-            const fromData = Number(row.getAttribute('data-amount'));
-            const amount = !Number.isNaN(fromCell) && fromCell > 0 ? fromCell : fromData;
+  // Put the tab name that contains: name | amount
+  // If you're not sure, try "Sheet1" first.
+  const SHEET_TAB = "sponsors";
 
-            if (!Number.isNaN(amount) && amount > 0) {
-                totalRaised += amount;
-            }
-        });
+  // GViz JSON endpoint (no API key)
+  const SHEET_GVIZ_URL =
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json`;
 
-        const progressPercent = Math.min((totalRaised / GOAL_AMOUNT) * 100, 100);
-        fundingAmount.textContent = `$${totalRaised.toLocaleString()} / $${GOAL_AMOUNT.toLocaleString()}`;
-        fundingBar.style.width = `${progressPercent}%`;
-        fundingSubtext.textContent = `${progressPercent.toFixed(1)}% of goal reached`;
-    })();
+  const fundingAmount = document.getElementById("fundingAmount");
+  const fundingBar = document.getElementById("fundingProgressBar");
+  const fundingSubtext = document.getElementById("fundingSubtext");
+  const sponsorBody = document.getElementById("sponsorBody");
+
+  if (!fundingAmount || !fundingBar || !fundingSubtext || !sponsorBody) return;
+
+  function parseGViz(text) {
+    // GViz returns: google.visualization.Query.setResponse({...});
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+    if (start === -1 || end === -1 || end <= start) throw new Error("Bad GViz response");
+    return JSON.parse(text.slice(start, end + 1));
+  }
+
+  function getCell(row, idx) {
+    const c = row?.c?.[idx];
+    // Prefer raw value (v). If missing, try formatted (f).
+    return c?.v ?? c?.f ?? null;
+  }
+
+  function parseAmount(x) {
+    if (x == null) return null;
+    const s = String(x).trim();
+    if (!s) return null;
+    const cleaned = s.replace(/[^0-9.-]/g, "");
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function addRow(name, amount) {
+    const tr = document.createElement("tr");
+    tr.className = "sponsor-row";
+    tr.setAttribute("data-amount", String(amount ?? ""));
+
+    const tdName = document.createElement("td");
+    tdName.className = "sponsor-name";
+    tdName.textContent = name || "Anonymous";
+
+    const tdAmt = document.createElement("td");
+    tdAmt.className = "donation-amount";
+    tdAmt.textContent = amount != null ? `$${amount}` : "—";
+
+    tr.appendChild(tdName);
+    tr.appendChild(tdAmt);
+    sponsorBody.appendChild(tr);
+  }
+
+  function updateProgress(totalRaised) {
+    const pct = Math.min((totalRaised / GOAL_AMOUNT) * 100, 100);
+    fundingAmount.textContent = `$${totalRaised.toLocaleString()} / $${GOAL_AMOUNT.toLocaleString()}`;
+    fundingBar.style.width = `${pct}%`;
+    fundingSubtext.textContent = `${pct.toFixed(1)}% of goal reached`;
+  }
+
+  try {
+    const res = await fetch(SHEET_GVIZ_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    const text = await res.text();
+    const json = parseGViz(text);
+
+    const rows = json?.table?.rows ?? [];
+
+    // Clear table
+    sponsorBody.innerHTML = "";
+
+    let totalRaised = 0;
+
+    for (const r of rows) {
+      // Columns: 0=name, 1=amount (based on your sheet)
+      const name = String(getCell(r, 0) ?? "").trim();
+      const amount = parseAmount(getCell(r, 1));
+
+      // Skip blank rows
+      if (!name && amount == null) continue;
+
+      addRow(name, amount ?? 0);
+      if (amount != null && amount > 0) totalRaised += amount;
+    }
+
+    updateProgress(totalRaised);
+  } catch (e) {
+    console.error(e);
+    sponsorBody.innerHTML =
+      `<tr><td class="sponsor-name">Data source unavailable</td><td class="donation-amount">—</td></tr>`;
+    updateProgress(0);
+  }
+})();
 </script>
+
 
 </body>
 </html>

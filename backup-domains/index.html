@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="SGGames">
+    <meta name="keywords" content="sggames, backup domains, domain status, unblocked games">
+    <title>Backup Domains - SGGames</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="icon" href="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/js/mimicry.js"></script>
+    <style>
+        :root {
+            --primary-color: #0a0e17;
+            --secondary-color: #1a1f2c;
+            --accent-color: #5644ff;
+            --text-color: #ffffff;
+            --muted-text: rgba(255, 255, 255, 0.75);
+            --row-hover: rgba(86, 68, 255, 0.12);
+            --green: #27c46a;
+            --blue: #3b82f6;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --gray: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #0a0e17 0%, #111827 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .home-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .home-link:hover {
+            color: var(--accent-color);
+        }
+
+        main {
+            width: min(1080px, 94%);
+            margin: 2rem auto 3rem;
+        }
+
+        h1 {
+            margin: 0 0 0.6rem;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            background: linear-gradient(90deg, #5644ff, #9f44ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            margin: 0 0 1.4rem;
+            color: var(--muted-text);
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .legend-item {
+            background: rgba(26, 31, 44, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.92rem;
+            line-height: 1.35;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--secondary-color);
+        }
+
+        thead th {
+            text-align: left;
+            background: var(--accent-color);
+            padding: 0.95rem 1rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 0.95rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: var(--row-hover);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .domain-link {
+            color: #b8c8ff;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .domain-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            padding: 0.35rem 0.65rem;
+            font-weight: 600;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            color: #ffffff;
+        }
+
+        .status-green { background-color: var(--green); }
+        .status-blue { background-color: var(--blue); }
+        .status-orange { background-color: var(--orange); }
+        .status-red { background-color: var(--red); }
+        .status-gray { background-color: var(--gray); color: #111827; }
+
+        .bool-chip {
+            display: inline-block;
+            min-width: 78px;
+            text-align: center;
+            border-radius: 999px;
+            padding: 0.28rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .yes { background: rgba(39, 196, 106, 0.2); color: #a7f3d0; }
+        .no { background: rgba(239, 68, 68, 0.18); color: #fecaca; }
+        .unknown { background: rgba(156, 163, 175, 0.18); color: #e5e7eb; }
+
+        .updated {
+            margin-top: 0.9rem;
+            color: var(--muted-text);
+            font-size: 0.85rem;
+        }
+
+        .setup-card {
+            margin-top: 1.1rem;
+            background: rgba(26, 31, 44, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
+        .setup-card h2 {
+            margin: 0 0 0.6rem;
+            font-size: 1.1rem;
+            color: #d9e1ff;
+        }
+
+        .setup-card p {
+            margin: 0.35rem 0;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .setup-card ol {
+            margin: 0.6rem 0 0.6rem 1.25rem;
+            padding: 0;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .sheet-template {
+            margin-top: 0.6rem;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #0f1420;
+            padding: 0.7rem;
+        }
+
+        .sheet-template code {
+            font-family: Consolas, 'Courier New', monospace;
+            white-space: pre;
+            font-size: 0.83rem;
+            color: #d4dcff;
+        }
+
+        @media (max-width: 640px) {
+            thead th, tbody td {
+                padding: 0.8rem;
+                font-size: 0.87rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a class="home-link" href="/">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            Home
+        </a>
+    </header>
+
+    <main>
+        <h1>Backup Domain Status</h1>
+        <p class="subtitle">Track every domain hosting SGGames and keep statuses updated fast.</p>
+
+        <section class="legend" aria-label="Status legend">
+            <div class="legend-item"><strong>&#x1F7E2; Green</strong> Live &amp; not blocked</div>
+            <div class="legend-item"><strong>&#x1F7E0; Orange</strong> Not live or blocked</div>
+            <div class="legend-item"><strong>&#x1F534; Red</strong> Blocked</div>
+            <div class="legend-item"><strong>&#x26AA; Gray</strong> Unknown</div>
+        </section>
+
+        <div class="table-wrap">
+            <table aria-label="SGGames domain status table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Status</th>
+                        <th>Deployed</th>
+                        <th>Blocked</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="domainRows"></tbody>
+            </table>
+        </div>
+<!--
+        <section class="setup-card" aria-label="Google Sheet setup guide">
+            <h2>Google Sheet Template + Setup</h2>
+            <p>Sheet tab must be named <code>domains</code>. Row 1 headers must stay in this exact order:</p>
+            <div class="sheet-template">
+                <code>domain	url	status	deployed	blocked	notes
+sggames.example	https://sggames.example/	green	true	false	Main live domain
+alt1.example		blue	false	false	DNS ready, not deployed yet
+blocked-live.example	https://blocked-live.example/	orange	true	true	Live but filtered
+blocked-offline.example	https://blocked-offline.example/	red	false	true	Hard blocked
+unknown.example		gray			Not tested yet</code>
+            </div>
+            <p>Accepted values: <code>status</code> = <code>green|blue|orange|red|gray</code>. <code>deployed</code>/<code>blocked</code> = <code>true/false</code>, <code>yes/no</code>, <code>1/0</code>, or blank.</p>
+            <ol>
+                <li>Create a Google Sheet and rename the first tab to <code>domains</code>.</li>
+                <li>Paste the template above (tab-separated) starting at cell <code>A1</code>.</li>
+                <li>Publish it: <code>File -> Share -> Publish to web</code>.</li>
+                <li>Copy your sheet ID from the URL: <code>https://docs.google.com/spreadsheets/d/&lt;SHEET_ID&gt;/edit</code>.</li>
+                <li>Replace <code>&lt;SHEET_ID&gt;</code> in <code>SHEET_GVIZ_URL</code> below.</li>
+            </ol>
+        </section>
+-->
+        <p class="updated" id="lastUpdated"></p>
+    </main>
+
+    <script>
+        const statusMeta = {
+            green: { label: '\uD83D\uDFE2 Live & Unblocked', className: 'status-green' },
+            orange: { label: '\uD83D\uDFE0 Not Live & Unblocked', className: 'status-orange' },
+            red: { label: '\uD83D\uDD34 Blocked', className: 'status-red' },
+            gray: { label: '\u26AA Unknown', className: 'status-gray' }
+        };
+
+        // Replace <SHEET_ID> with your Google Sheet ID.
+        // Format:
+        // https://docs.google.com/spreadsheets/d/<SHEET_ID>/gviz/tq?sheet=domains&tqx=out:json
+        const SHEET_GVIZ_URL = "https://docs.google.com/spreadsheets/d/1MKaM56gFAQ6wLrdAOp0vOqP78S26M7hF4fY0SWAx4hw/gviz/tq?sheet=domains&tqx=out:json";
+
+        // Copy/paste template (object):
+        // {
+        //     domain: 'new-domain.example',
+        //     url: 'https://new-domain.example/',
+        //     status: 'gray', // green | blue | orange | red | gray
+        //     deployed: null, // true | false | null
+        //     blocked: null,  // true | false | null
+        //     notes: 'Add your quick note here'
+        // },
+
+        const fallbackDomains = [
+            {
+                domain: window.location.hostname || 'current-host',
+                url: window.location.origin || '/',
+                status: 'green',
+                deployed: true,
+                blocked: false,
+                notes: 'Current active host.'
+            },
+            {
+                domain: 'your-username.github.io',
+                url: 'https://your-username.github.io/',
+                status: 'blue',
+                deployed: false,
+                blocked: false,
+                notes: 'GitHub Pages option from README setup.'
+            },
+            {
+                domain: 'domain-3.example',
+                url: 'https://domain-3.example/',
+                status: 'gray',
+                deployed: false,
+                blocked: null,
+                notes: 'Replace with your real domain.'
+            }
+        ];
+
+        // Copy/paste template (HTML row):
+        // <tr>
+        //   <td><a class="domain-link" href="https://new-domain.example/" target="_blank" rel="noopener noreferrer">new-domain.example</a></td>
+        //   <td><span class="badge status-gray">? Unknown / Not Tested</span></td>
+        //   <td><span class="bool-chip unknown">Unknown</span></td>
+        //   <td><span class="bool-chip unknown">Unknown</span></td>
+        //   <td>Notes here</td>
+        // </tr>
+
+        function toBoolChip(value) {
+            if (value === true) return '<span class="bool-chip yes">Yes</span>';
+            if (value === false) return '<span class="bool-chip no">No</span>';
+            return '<span class="bool-chip unknown">Unknown</span>';
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function parseBoolean(value) {
+            if (value === null || value === undefined || value === '') return null;
+
+            const normalized = String(value).trim().toLowerCase();
+            if (['true', 'yes', '1'].includes(normalized)) return true;
+            if (['false', 'no', '0'].includes(normalized)) return false;
+            return null;
+        }
+
+        function parseGvizResponse(rawText) {
+            const start = rawText.indexOf('{');
+            const end = rawText.lastIndexOf('}');
+            if (start === -1 || end === -1 || end <= start) {
+                throw new Error('Invalid GViz response wrapper.');
+            }
+
+            return JSON.parse(rawText.slice(start, end + 1));
+        }
+
+        function getCellValue(row, index) {
+            if (!row || !row.c || !row.c[index]) return '';
+            const cell = row.c[index];
+            if (cell.v === null || cell.v === undefined) return '';
+            return String(cell.v);
+        }
+
+        function normalizeRow(row) {
+            const domain = getCellValue(row, 0).trim();
+            const url = getCellValue(row, 1).trim();
+            const statusRaw = getCellValue(row, 2).trim().toLowerCase();
+            const deployed = parseBoolean(getCellValue(row, 3));
+            const blocked = parseBoolean(getCellValue(row, 4));
+            const notes = getCellValue(row, 5).trim();
+
+            if (!domain && !url) return null;
+
+            let status = statusRaw;
+            if (!statusMeta[status]) {
+                status = 'gray';
+            }
+
+            return { domain, url, status, deployed, blocked, notes };
+        }
+
+        function sanitizeUrl(url) {
+            if (!url) return '#';
+            try {
+                const parsed = new URL(url);
+                if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '#';
+                return parsed.href;
+            } catch (_) {
+                return '#';
+            }
+        }
+
+        async function fetchSheetData() {
+            if (SHEET_GVIZ_URL.includes('<SHEET_ID>')) {
+                throw new Error('SHEET_GVIZ_URL is not configured.');
+            }
+
+            const response = await fetch(SHEET_GVIZ_URL, { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`Sheet request failed: ${response.status}`);
+            }
+
+            const rawText = await response.text();
+            const parsed = parseGvizResponse(rawText);
+            const rows = parsed?.table?.rows || [];
+
+            const normalized = rows
+                .map(normalizeRow)
+                .filter((item) => item !== null);
+
+            return normalized;
+        }
+
+        function safeStatus(statusKey) {
+            return statusMeta[statusKey] || statusMeta.gray;
+        }
+
+        function renderDomains(domains) {
+            const tbody = document.getElementById('domainRows');
+
+            tbody.innerHTML = domains.map((item) => {
+                const status = safeStatus(item.status);
+                const domainText = escapeHtml(item.domain || item.url || 'unknown-domain');
+                const href = sanitizeUrl(item.url);
+                const notes = escapeHtml(item.notes || '');
+
+                return `
+                    <tr>
+                        <td><a class="domain-link" href="${href}" target="_blank" rel="noopener noreferrer">${domainText}</a></td>
+                        <td><span class="badge ${status.className}">${status.label}</span></td>
+                        <td>${toBoolChip(item.deployed)}</td>
+                        <td>${toBoolChip(item.blocked)}</td>
+                        <td>${notes}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function setUpdatedText(messagePrefix) {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = `${messagePrefix}: ${now.toLocaleString()}`;
+        }
+
+        async function initDomains() {
+            try {
+                const sheetDomains = await fetchSheetData();
+
+                if (!sheetDomains.length) {
+                    renderDomains(fallbackDomains);
+                    setUpdatedText('Data source unavailable (no valid rows), showing fallback');
+                    return;
+                }
+
+                renderDomains(sheetDomains);
+                setUpdatedText('Data synced live');
+            } catch (error) {
+                renderDomains(fallbackDomains);
+                setUpdatedText('Data source unavailable, showing fallback');
+            }
+        }
+
+        initDomains();
+    </script>
+</body>
+</html>
