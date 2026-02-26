@@ -6,8 +6,20 @@
 
 function applySavedMimicry() {
     // Check if there's a saved style and apply it
-    const savedTitle = localStorage.getItem('pageMimicTitle');
-    const savedIcon = localStorage.getItem('pageMimicIcon');
+    let savedType = localStorage.getItem('pageMimicType');
+    let savedTitle = localStorage.getItem('pageMimicTitle');
+    let savedIcon = localStorage.getItem('pageMimicIcon');
+
+    // First-time default: use Google Docs cloak until user picks another option.
+    if (!savedType && !savedTitle && !savedIcon) {
+        savedType = 'gdocs';
+        savedTitle = 'Untitled document - Google Docs';
+        savedIcon = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico';
+
+        localStorage.setItem('pageMimicType', savedType);
+        localStorage.setItem('pageMimicTitle', savedTitle);
+        localStorage.setItem('pageMimicIcon', savedIcon);
+    }
     
     // Apply saved title if available
     if (savedTitle) {
@@ -99,7 +111,7 @@ function initTabClosePrevention() {
 
 function loadSavedSettings() {
     // Tab cloaking settings
-    const savedType = localStorage.getItem('pageMimicType');
+    const savedType = localStorage.getItem('pageMimicType') || 'gdocs';
     
     if (savedType) {
         // Highlight the correct option in the modal
