@@ -1,31 +1,9 @@
 /**
  * SGGame Mimicry JS - Tab Cloaking, Security Features, and Site-wide Analytics
- * This script enables tab cloaking, panic button, tab close verification,
- * and Google Analytics across the site.
+ * This script enables tab cloaking, panic button, tab close verification
  * Add this to all pages by including the script in the head section.
  */
 
-const GA_MEASUREMENT_ID = "G-KRH3X9QS3M";
-
-function initGoogleAnalytics() {
-    if (window.__sgGaLoaded) return;
-    window.__sgGaLoaded = true;
-
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-        window.dataLayer.push(arguments);
-    };
-
-    gtag("js", new Date());
-    gtag("config", GA_MEASUREMENT_ID, {
-        page_path: window.location.pathname
-    });
-}
 
 function applySavedMimicry() {
     // Check if there's a saved style and apply it
