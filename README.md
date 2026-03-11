@@ -1,4 +1,4 @@
-## There was an AI readme but I deleted it.
+## There was an AI readme but I deleted it. I also deleted trackers :)
 
 You probably shouldn't trust random code unless you understand what it does.
 
